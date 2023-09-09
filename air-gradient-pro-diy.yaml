@@ -191,7 +191,8 @@ interval:
             rco2: !lambda return to_string(id(co2).state);
             atmp: !lambda return to_string(id(temp).state);
             rhum: !lambda return to_string(id(humidity).state);
-            tvoc: !lambda return to_string(id(voc).state);
+            tvoc_index: !lambda return to_string(id(voc).state);
+            nox_index: !lambda return to_string(id(nox).state);
           verify_ssl: false
 
 uart:
