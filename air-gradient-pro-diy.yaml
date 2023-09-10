@@ -183,7 +183,7 @@ interval:
             Content-Type: application/json
           # "!lambda return to_string(id(pm2).state);" Converts sensor output from double to string
           json:
-            wifi: id(airgradient_wifi_signal).state
+            wifi: !lambda return to_string(id(airgradient_wifi_signal).state);
             pm01: !lambda return to_string(id(pm_1_0).state);
             pm02: !lambda return to_string(id(pm_2_5).state);
             pm10: !lambda return to_string(id(pm_10_0).state);
