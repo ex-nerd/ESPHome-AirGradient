@@ -13,6 +13,7 @@ substitutions:
   id: "1"
   devicename: "airgradient-pro"
   upper_devicename: "AirGradient Pro"
+  api_root: "http://hw.airgradient.com"
   # Pick your temperature unit:
   # temperature_units: "F"
   temperature_units: "C"
@@ -178,7 +179,7 @@ interval:
       - http_request.post:
           # AirGradient URL with the last 3 bytes of the MAC address in Hex format all lower case
           url: !lambda |-
-            return "http://hw.airgradient.com/sensors/airgradient:" + get_mac_address().substr(6,11) + "/measures";
+            return "${api_root}/sensors/airgradient:" + get_mac_address().substr(6,11) + "/measures";
           headers:
             Content-Type: application/json
           # "!lambda return to_string(id(pm2).state);" Converts sensor output from double to string
