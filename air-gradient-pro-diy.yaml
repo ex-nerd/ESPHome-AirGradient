@@ -72,6 +72,15 @@ switch:
   - platform: safe_mode
     name: "Flash Mode (Safe Mode)"
     icon: "mdi:cellphone-arrow-down"
+  - platform: template
+    name: "OLED Display"
+    icon: "mdi:led-on"
+    optimistic: true
+    restore_mode: ALWAYS_ON
+    turn_on_action:
+      - lambda: id(oled).turn_on();
+    turn_off_action:
+      - lambda: id(oled).turn_off();
 
 i2c:
   sda: D2
