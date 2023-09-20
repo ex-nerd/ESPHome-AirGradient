@@ -85,6 +85,7 @@ switch:
 i2c:
   sda: D2
   scl: D1
+  frequency: 100kHz
 
 font:
   - file: "gfonts://Ubuntu"
