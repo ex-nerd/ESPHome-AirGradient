@@ -13,6 +13,7 @@ substitutions:
   id: "1"
   devicename: "airgradient-pro"
   upper_devicename: "AirGradient Pro"
+  api_root: "http://hw.airgradient.com"
   # Pick your temperature unit:
   # temperature_units: "F"
   temperature_units: "C"
@@ -71,10 +72,20 @@ switch:
   - platform: safe_mode
     name: "Flash Mode (Safe Mode)"
     icon: "mdi:cellphone-arrow-down"
+  - platform: template
+    name: "OLED Display"
+    icon: "mdi:led-on"
+    optimistic: true
+    restore_mode: ALWAYS_ON
+    turn_on_action:
+      - lambda: id(oled).turn_on();
+    turn_off_action:
+      - lambda: id(oled).turn_off();
 
 i2c:
   sda: D2
   scl: D1
+  frequency: 100kHz
 
 font:
   - file: "gfonts://Ubuntu"
@@ -174,12 +185,12 @@ interval:
       - http_request.post:
           # AirGradient URL with the last 3 bytes of the MAC address in Hex format all lower case
           url: !lambda |-
-            return "http://hw.airgradient.com/sensors/airgradient:" + get_mac_address().substr(6,11) + "/measures";
+            return "${api_root}/sensors/airgradient:" + get_mac_address().substr(6,11) + "/measures";
           headers:
             Content-Type: application/json
           # "!lambda return to_string(id(pm2).state);" Converts sensor output from double to string
           json:
-            wifi: id(airgradient_wifi_signal).state
+            wifi: !lambda return to_string(id(airgradient_wifi_signal).state);
             pm01: !lambda return to_string(id(pm_1_0).state);
             pm02: !lambda return to_string(id(pm_2_5).state);
             pm10: !lambda return to_string(id(pm_10_0).state);
@@ -187,7 +198,8 @@ interval:
             rco2: !lambda return to_string(id(co2).state);
             atmp: !lambda return to_string(id(temp).state);
             rhum: !lambda return to_string(id(humidity).state);
-            tvoc: !lambda return to_string(id(voc).state);
+            # tvoc_index: !lambda return to_string(id(voc).state);
+            # nox_index: !lambda return to_string(id(nox).state);
           verify_ssl: false
 
 uart:
